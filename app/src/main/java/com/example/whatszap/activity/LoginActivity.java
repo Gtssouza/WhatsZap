@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +27,15 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnEntrarLogin;
     private Usuario usuario;
     private FirebaseAuth auth;
+
+    /*@Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser userAtual = auth.getCurrentUser();
+        if(userAtual != null){
+            abrirActivityMain();
+        }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     public void abrirCadastro(View view){
         Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(intent);
@@ -101,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void abrirActivityMain(){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
         startActivity(intent);
     }
 }
