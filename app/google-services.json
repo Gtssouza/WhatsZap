@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "997246972725",
+    "firebase_url": "https://whatzap-dab5b.firebaseio.com",
+    "project_id": "whatzap-dab5b",
+    "storage_bucket": "whatzap-dab5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997246972725:android:f128fd6120b448177b527c",
+        "android_client_info": {
+          "package_name": "com.example.whatszap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997246972725-v5juadpkd3rrsdc5fob30v7mqtgjd7gu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whatszap",
+            "certificate_hash": "950abb8114dae5fd1f22c20f8c6d409a2980af41"
+          }
+        },
+        {
+          "client_id": "997246972725-p16qhs27ahcuqf73546oakqq9ja42c96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCewxmJwcZwBPocG6BXEHpG8eYb8cHC8KE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997246972725-p16qhs27ahcuqf73546oakqq9ja42c96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
