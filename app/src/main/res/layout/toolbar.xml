@@ -8,8 +8,7 @@
         android:id="@+id/toolbarPrincipal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolBar"
         android:elevation="10dp"/>
 </FrameLayout>
