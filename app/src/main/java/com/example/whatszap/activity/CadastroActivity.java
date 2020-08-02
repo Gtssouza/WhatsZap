@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.whatszap.R;
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.helper.Base64Custom;
 import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,7 +35,7 @@ public class CadastroActivity extends AppCompatActivity {
         campoSenha = findViewById(R.id.editSenha);
     }
 
-    public void cadastroUsuario(Usuario usuario){
+    public void cadastroUsuario(final Usuario usuario){
         auth = ConfigFirebase.getFirebaseAutentication();
         auth.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -42,7 +43,16 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(CadastroActivity.this,"Sucesso ao cadastrar usuário",Toast.LENGTH_SHORT).show();
-                    finish();
+
+
+                    try{
+                        String idUser = Base64Custom.codificaBase64(usuario.getEmail());
+                        usuario.setIdUsuario(idUser);
+                        usuario.salvar();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }else{
                     String msg = "";
                     try{

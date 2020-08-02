@@ -1,5 +1,8 @@
 package com.example.whatszap.model;
 
+import com.example.whatszap.activity.ConfiguracoesActivity;
+import com.example.whatszap.config.ConfigFirebase;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
 public class Usuario {
@@ -12,7 +15,11 @@ public class Usuario {
     public Usuario() {
     }
 
-
+    public void salvar(){
+        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+        DatabaseReference usuario = firebaseRef.child("usuarios").child(getIdUsuario());
+        usuario.setValue(this);
+    }
 
 @Exclude
     public String getIdUsuario() {
