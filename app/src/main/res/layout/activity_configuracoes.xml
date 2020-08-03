@@ -18,8 +18,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="220dp"
+        android:layout_height="205dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/padrao"
         app:civ_border_color="#FFFFFFFF"
@@ -80,5 +80,27 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <ImageButton
+        android:id="@+id/imageBtnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toStartOf="@+id/imageBtnGaleria"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_camera_cinza_24" />
+
+    <ImageButton
+        android:id="@+id/imageBtnGaleria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageBtnCamera"
+        app:srcCompat="@drawable/ic_image_cinza_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
