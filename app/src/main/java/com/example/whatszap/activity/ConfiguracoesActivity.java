@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
@@ -45,6 +47,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private CircleImageView circleImageView;
     private StorageReference storageReference;
     private String idUsuario;
+    private EditText editTextNome;
 
     private String[] permissioesNecessarias = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -59,6 +62,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         btnCamera = findViewById(R.id.imageBtnCamera);
         btnGaleria = findViewById(R.id.imageBtnGaleria);
         circleImageView = findViewById(R.id.imageProfile);
+        editTextNome = findViewById(R.id.editTxtNome);
         idUsuario = UsuarioFirebase.getIndentificadorUser();
 
         storageReference = ConfigFirebase.getFirebaseStorage();
@@ -84,6 +88,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         }else {
             circleImageView.setImageResource(R.drawable.padrao);
         }
+
+        editTextNome.setText(usuario.getDisplayName());
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override

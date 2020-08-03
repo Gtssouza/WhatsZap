@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageProfile">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTxtNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
