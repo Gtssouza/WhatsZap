@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +49,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private String idUsuario;
     private EditText editTextNome;
+    private ImageView imagemAtualizaNome;
 
     private String[] permissioesNecessarias = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -64,6 +66,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         circleImageView = findViewById(R.id.imageProfile);
         editTextNome = findViewById(R.id.editTxtNome);
         idUsuario = UsuarioFirebase.getIndentificadorUser();
+        imagemAtualizaNome = findViewById(R.id.imgAtualizarNome);
 
         storageReference = ConfigFirebase.getFirebaseStorage();
 
@@ -113,6 +116,17 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             }
         }
       });
+
+        imagemAtualizaNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nome = editTextNome.getText().toString();
+                boolean retorno = UsuarioFirebase.atualizarNomeUsuario(nome);
+                if(retorno){
+                    Toast.makeText(ConfiguracoesActivity.this,"Nome alterado com sucesso",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
