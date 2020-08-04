@@ -26,6 +26,7 @@ import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.helper.Base64Custom;
 import com.example.whatszap.helper.Permissao;
 import com.example.whatszap.helper.UsuarioFirebase;
+import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +51,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private String idUsuario;
     private EditText editTextNome;
     private ImageView imagemAtualizaNome;
+    private Usuario usuarioLogado;
 
     private String[] permissioesNecessarias = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -65,11 +67,11 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         btnGaleria = findViewById(R.id.imageBtnGaleria);
         circleImageView = findViewById(R.id.imageProfile);
         editTextNome = findViewById(R.id.editTxtNome);
-        idUsuario = UsuarioFirebase.getIndentificadorUser();
         imagemAtualizaNome = findViewById(R.id.imgAtualizarNome);
 
         storageReference = ConfigFirebase.getFirebaseStorage();
-
+        idUsuario = UsuarioFirebase.getIndentificadorUser();
+        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
 
         //Valida permissões
         Permissao.validarPermissoes(permissioesNecessarias,this,1);
@@ -81,7 +83,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Recuperar dados usuario
-        FirebaseUser usuario = UsuarioFirebase.getUserAtual();
+        final FirebaseUser usuario = UsuarioFirebase.getUserAtual();
         Uri url = usuario.getPhotoUrl();
 
         if(url != null){
@@ -123,6 +125,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 String nome = editTextNome.getText().toString();
                 boolean retorno = UsuarioFirebase.atualizarNomeUsuario(nome);
                 if(retorno){
+                    usuarioLogado.setNome(nome);
+                    usuarioLogado.atualizar();
                     Toast.makeText(ConfiguracoesActivity.this,"Nome alterado com sucesso",Toast.LENGTH_SHORT).show();
                 }
             }

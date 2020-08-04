@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,6 +70,21 @@ public class UsuarioFirebase {
             return false;
        }
 
+    }
+
+    public static Usuario getDadosUsuarioLogado(){
+        FirebaseUser firebaseUser = getUserAtual();
+        Usuario usuario = new Usuario();
+        usuario.setEmail(firebaseUser.getEmail());
+        usuario.setNome(firebaseUser.getDisplayName());
+
+        if(firebaseUser.getPhotoUrl() == null){
+            usuario.setFotoUser("");
+        }else{
+            usuario.setFotoUser(firebaseUser.getPhotoUrl().toString());
+        }
+
+        return usuario;
     }
 
 }
