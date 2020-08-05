@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import com.example.whatszap.R;
 import com.example.whatszap.adapter.ContatosAdapter;
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Usuario;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,7 @@ public class ContatosFragment extends Fragment {
     private ArrayList<Usuario> listaContatos = new ArrayList<>();
     private DatabaseReference userRef;
     private ValueEventListener valueEventListenerContatos;
+    private FirebaseUser userAtual;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -66,6 +69,7 @@ public class ContatosFragment extends Fragment {
         //Configurações iniciais
         recyclerView = view.findViewById(R.id.recyclerListaContatos);
         userRef = ConfigFirebase.getFirebaseDatabase().child("usuarios");
+        userAtual = UsuarioFirebase.getUserAtual();
 
         //Configurar adapter
         adapter = new ContatosAdapter(listaContatos, getActivity());
@@ -97,7 +101,11 @@ public class ContatosFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dados : dataSnapshot.getChildren() ){
                     Usuario usuario = dados.getValue(Usuario.class);
-                    listaContatos.add(usuario);
+                    String emailUserAtual = userAtual.getEmail();
+                    if(!emailUserAtual.equals(usuario.getEmail())){
+                        listaContatos.add(usuario);
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
             }
