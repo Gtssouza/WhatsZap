@@ -2,6 +2,7 @@ package com.example.whatszap.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +13,12 @@ import android.view.ViewGroup;
 
 import com.example.whatszap.R;
 import com.example.whatszap.adapter.ContatosAdapter;
+import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.model.Usuario;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -21,6 +27,8 @@ public class ContatosFragment extends Fragment {
     private RecyclerView recyclerView;
     private ContatosAdapter adapter;
     private ArrayList<Usuario> listaContatos = new ArrayList<>();
+    private DatabaseReference userRef;
+    private ValueEventListener valueEventListenerContatos;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -57,6 +65,7 @@ public class ContatosFragment extends Fragment {
 
         //Configurações iniciais
         recyclerView = view.findViewById(R.id.recyclerListaContatos);
+        userRef = ConfigFirebase.getFirebaseDatabase().child("usuarios");
 
         //Configurar adapter
         adapter = new ContatosAdapter(listaContatos, getActivity());
@@ -68,5 +77,35 @@ public class ContatosFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarContatos();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        userRef.removeEventListener(valueEventListenerContatos);
+    }
+
+    public void recuperarContatos(){
+        valueEventListenerContatos = userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dados : dataSnapshot.getChildren() ){
+                    Usuario usuario = dados.getValue(Usuario.class);
+                    listaContatos.add(usuario);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
