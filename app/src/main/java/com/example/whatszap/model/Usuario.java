@@ -16,7 +16,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    private String fotoUser;
+    private String foto;
 
     public Usuario() {
     }
@@ -44,7 +44,7 @@ public class Usuario {
         HashMap<String,Object> usuarioMap = new HashMap<>();
         usuarioMap.put("email", getEmail());
         usuarioMap.put("nome", getNome());
-        usuarioMap.put("foto", getFotoUser());
+        usuarioMap.put("foto", getFoto());
         return usuarioMap;
     }
 
@@ -82,11 +82,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getFotoUser() {
-        return fotoUser;
+    public String getFoto() {
+        return foto;
     }
 
-    public void setFotoUser(String fotoUser) {
-        this.fotoUser = fotoUser;
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

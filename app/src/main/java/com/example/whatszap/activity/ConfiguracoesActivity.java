@@ -195,7 +195,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     public void atualizaFotoUser(Uri url){
         boolean retorno = UsuarioFirebase.atualizarFotoUsuario(url);
         if(retorno){
-            usuarioLogado.setFotoUser(url.toString());
+            usuarioLogado.setFoto(url.toString());
             usuarioLogado.atualizar();
 
             Toast.makeText(ConfiguracoesActivity.this, "Sua foto foi alterada", Toast.LENGTH_SHORT).show();

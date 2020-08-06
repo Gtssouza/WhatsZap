@@ -79,9 +79,9 @@ public class UsuarioFirebase {
         usuario.setNome(firebaseUser.getDisplayName());
 
         if(firebaseUser.getPhotoUrl() == null){
-            usuario.setFotoUser("");
+            usuario.setFoto("");
         }else{
-            usuario.setFotoUser(firebaseUser.getPhotoUrl().toString());
+            usuario.setFoto(firebaseUser.getPhotoUrl().toString());
         }
 
         return usuario;

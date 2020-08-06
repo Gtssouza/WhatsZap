@@ -41,8 +41,8 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.MyView
         holder.nome.setText(usuario.getNome());
         holder.email.setText(usuario.getEmail());
 
-        if(usuario.getFotoUser() != null){
-            Uri uri = Uri.parse(usuario.getFotoUser());
+        if(usuario.getFoto() != null){
+            Uri uri = Uri.parse(usuario.getFoto());
             Glide.with(context).load(uri).into(holder.foto);
         }else{
             holder.foto.setImageResource(R.drawable.padrao);
