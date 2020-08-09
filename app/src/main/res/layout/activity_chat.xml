@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_chat"
     android:orientation="vertical"
     tools:context=".activity.ChatActivity">
 
@@ -11,20 +12,27 @@
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" >
+        android:theme="?attr/actionBarTheme">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImagePerfil"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginRight="16dp"
             android:src="@drawable/padrao">
+
         </de.hdodenhof.circleimageview.CircleImageView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gustavo Souza">
+            android:text="Gustavo Souza"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:textStyle="bold">
 
         </TextView>
 
@@ -32,8 +40,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="620dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -43,24 +52,53 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:background="@drawable/fundo_mensagem_chat">
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="278dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:paddingBottom="6dp" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/ic_camera_cinza_24" />
+
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_send" />
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_baseline_send_24" />
+
     </LinearLayout>
 </LinearLayout>
