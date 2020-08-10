@@ -69,7 +69,7 @@
             android:background="@drawable/fundo_mensagem_chat">
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/editEnviarText"
                 android:layout_width="278dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -83,7 +83,7 @@
                 android:paddingBottom="6dp" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/imgEnviarFoto"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
@@ -93,10 +93,11 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabEnviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:onClick="enviarMsg"
             app:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_baseline_send_24" />
