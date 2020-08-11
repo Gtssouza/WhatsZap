@@ -7,10 +7,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,15 +26,22 @@ import com.example.whatszap.helper.Base64Custom;
 import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Mensagem;
 import com.example.whatszap.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,6 +57,9 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference database;
     private DatabaseReference mensagensRef;
     private ChildEventListener childEventListenerMensagens;
+    private ImageView sendImage;
+    private static final int SELECAO_CAMERA =100;
+    private StorageReference storageReference;
 
 
     //Identificadores de Usuario remetente e destinatario
@@ -65,6 +77,7 @@ public class ChatActivity extends AppCompatActivity {
         txtNomeChat = findViewById(R.id.txtChatNome);
         txtMsg = findViewById(R.id.editEnviarText);
         recyclerView = findViewById(R.id.recyclerMsg);
+        sendImage = findViewById(R.id.imgEnviarFoto);
 
         //Recupera dados do user remetente
         idUserRemetente = UsuarioFirebase.getIndentificadorUser();
@@ -100,11 +113,87 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapterMsg);
 
         database = ConfigFirebase.getFirebaseDatabase();
+        storageReference = ConfigFirebase.getFirebaseStorage();
         mensagensRef = database.child("mensagens")
                 .child(idUserRemetente)
                 .child(idUserDestinatario);
 
+        //Evento clique na camera
+        sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(i.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(i,SELECAO_CAMERA);
+                }
+            }
+        });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            Bitmap imagem = null;
+
+            try{
+
+                switch (requestCode){
+                    case SELECAO_CAMERA:
+                        imagem = (Bitmap) data.getExtras().get("data");
+                        break;
+                }
+                if(imagem != null){
+
+                    //Recuperar dados da imagem para o firebase
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70,baos);
+                    byte[] dadosImagem = baos.toByteArray();
+
+                    //Criar nome da imagem
+                    String nomeImagem = UUID.randomUUID().toString();
+
+                    //Salvar imagem no Firebase
+                    final StorageReference imagemRefs = storageReference.child("imagens")
+                            .child("fotos")
+                            .child(idUserRemetente)
+                            .child(nomeImagem);
+
+                    UploadTask uploadTask = imagemRefs.putBytes(dadosImagem);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ChatActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                            imagemRefs.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    String url = task.getResult().toString();
+                                    Mensagem msg = new Mensagem();
+                                    msg.setIdUser(idUserRemetente);
+                                    msg.setMensagem("imagem.jpeg");
+                                    msg.setImagem(url);
+
+                                    //Salvar mensagem remetente
+                                    salvarMensagem(idUserRemetente,idUserDestinatario,msg);
+
+                                    //Salvar mensagem para destinatario
+                                    salvarMensagem(idUserDestinatario,idUserRemetente,msg);
+                                }
+                            });
+                        }
+                    });
+                }
+
+            }catch (Exception e){
+
+            }
+        }
     }
 
     public void enviarMsg(View view){

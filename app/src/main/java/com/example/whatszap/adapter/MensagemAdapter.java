@@ -16,6 +16,7 @@ import com.example.whatszap.R;
 import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Mensagem;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 public class MensagemAdapter extends RecyclerView.Adapter<MensagemAdapter.MyViewHolder> {
@@ -50,6 +51,7 @@ public class MensagemAdapter extends RecyclerView.Adapter<MensagemAdapter.MyView
 
         if(imagem != null){
             Uri url = Uri.parse(imagem);
+            holder.imagem.setVisibility(View.VISIBLE);
             Glide.with(context).load(url).into(holder.imagem);
             holder.mensagem.setVisibility(View.GONE);
         }else {
