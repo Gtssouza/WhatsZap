@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 
 import com.example.whatszap.R;
 import com.example.whatszap.activity.ChatActivity;
+import com.example.whatszap.activity.GrupoActivity;
 import com.example.whatszap.adapter.ContatosAdapter;
 import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.helper.RecyclerItemClickListener;
@@ -73,9 +74,17 @@ public class ContatosFragment extends Fragment {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Usuario userSelect = listaContatos.get(position);
-                                Intent i = new Intent(getActivity(), ChatActivity.class);
-                                i.putExtra("chatContato", userSelect);
-                                startActivity(i);
+                                boolean cabecalho = userSelect.getEmail().isEmpty();
+
+                                if(cabecalho){
+                                    Intent intent = new Intent(getActivity(), GrupoActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                                    i.putExtra("chatContato", userSelect);
+                                    startActivity(i);
+                                }
+
                             }
 
                             @Override
@@ -88,7 +97,14 @@ public class ContatosFragment extends Fragment {
 
                             }
                         }
-                ));
+                )
+        );
+
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail("");
+
+        listaContatos.add(itemGrupo);
 
         return view;
     }
@@ -96,7 +112,6 @@ public class ContatosFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        listaContatos.clear();
         recuperarContatos();
     }
 
@@ -111,6 +126,7 @@ public class ContatosFragment extends Fragment {
         valueEventListenerContatos = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 for(DataSnapshot dados : dataSnapshot.getChildren() ){
 
                     Usuario usuario = dados.getValue(Usuario.class);

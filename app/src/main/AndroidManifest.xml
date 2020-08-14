@@ -17,8 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ChatActivity"
-            android:parentActivityName=".activity.MainActivity"/>
+        <activity android:name=".activity.GrupoActivity"></activity>
+        <activity
+            android:name=".activity.ChatActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.ConfiguracoesActivity"
             android:parentActivityName=".activity.MainActivity" />
