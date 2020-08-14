@@ -91,8 +91,10 @@ public class ChatActivity extends AppCompatActivity {
         //Recuperar dados do usuário destinatario
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            userDest = (Usuario) bundle.getSerializable("contatos");
+
+            userDest = (Usuario) bundle.getSerializable("chatContato");
             txtNomeChat.setText(userDest.getNome());
+
             String foto = userDest.getFoto();
             if(foto != null){
                 Uri url = Uri.parse(userDest.getFoto());
@@ -195,7 +197,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
     }
@@ -212,6 +214,8 @@ public class ChatActivity extends AppCompatActivity {
 
             //salvar mensagem para o destinatario
             salvarMensagem(idUserDestinatario,idUserRemetente,mensagem);
+
+            salvarConversa(mensagem);
 
         }else{
             Toast.makeText(ChatActivity.this,"Escreva uma mensagem",Toast.LENGTH_SHORT).show();

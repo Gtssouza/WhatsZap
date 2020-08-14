@@ -18,9 +18,9 @@ public class Conversa implements Serializable {
 
     public void salvar(){
         DatabaseReference database = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference convarRef = database.child("conversas");
+        DatabaseReference conversaRef = database.child("conversas");
 
-        convarRef.child(this.getIdRemetente())
+        conversaRef.child(this.getIdRemetente())
                 .child(this.getIdDestinatario())
         .setValue(this);
     }

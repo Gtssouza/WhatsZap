@@ -1,5 +1,6 @@
 package com.example.whatszap.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.whatszap.R;
+import com.example.whatszap.activity.ChatActivity;
 import com.example.whatszap.adapter.ContatosAdapter;
 import com.example.whatszap.adapter.ConversasAdapter;
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.helper.RecyclerItemClickListener;
 import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Conversa;
 import com.google.firebase.database.ChildEventListener;
@@ -31,7 +35,7 @@ public class ConversasFragment extends Fragment {
     private RecyclerView recyclerViewConversas;
     private ConversasAdapter adapterConversas;
     private List<Conversa> listaConversas = new ArrayList<>();
-    private DatabaseReference dbRef;
+    private DatabaseReference database;
     private DatabaseReference conversaRef;
     private ChildEventListener childEventListenerConversas;
 
@@ -45,21 +49,47 @@ public class ConversasFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_conversas, container, false);
         recyclerViewConversas = view.findViewById(R.id.recyclerIdConversas);
-       // userRef = ConfigFirebase.getFirebaseDatabase().child("usuarios");
-        //userAtual = UsuarioFirebase.getUserAtual();
 
         //Configurar adapter
         adapterConversas = new ConversasAdapter(listaConversas, getActivity());
+
         //Configurar recyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewConversas.setLayoutManager(layoutManager);
         recyclerViewConversas.setHasFixedSize(true);
         recyclerViewConversas.setAdapter(adapterConversas);
 
+        //Configurar evento de clique
+        recyclerViewConversas.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewConversas,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Conversa conversaSelecionada = listaConversas.get(position);
+
+                                Intent i = new Intent(getActivity(), ChatActivity.class);
+                                i.putExtra("chatContato",conversaSelecionada.getUsuarioExibicao());
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                ));
+
         //Configura conversas ref
         String identificadorUser = UsuarioFirebase.getIndentificadorUser();
-        dbRef = ConfigFirebase.getFirebaseDatabase();
-        conversaRef = dbRef.child("conversas").child(identificadorUser);
+        database = ConfigFirebase.getFirebaseDatabase();
+        conversaRef = database.child("conversas").child(identificadorUser);
 
 
         return view;
