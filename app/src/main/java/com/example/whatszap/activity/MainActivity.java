@@ -56,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
 
         //Configuração do Material Search View
         materialSearchView = findViewById(R.id.materialSearchPrincipal);
+
+        //Listener para o search view
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                ConversasFragment fragment =(ConversasFragment) adapter.getPage(0);
+                fragment.recarregarConversas();
+            }
+        });
+
+        //Listener para caixa de texto
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -111,7 +111,7 @@ public class ConversasFragment extends Fragment {
     public void pesquisaConversas(String texto){
         //Log.d("pesquisa",texto);
         List<Conversa> listaConversaBusca = new ArrayList<>();
-        for(Conversa conversa : listaConversaBusca){
+        for(Conversa conversa : listaConversas){
             String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
             String ultMsg = conversa.getUltimaMsg().toLowerCase();
 
@@ -121,6 +121,12 @@ public class ConversasFragment extends Fragment {
         }
 
         adapterConversas = new ConversasAdapter(listaConversaBusca, getActivity());
+        recyclerViewConversas.setAdapter(adapterConversas);
+        adapterConversas.notifyDataSetChanged();
+    }
+
+    public void recarregarConversas(){
+        adapterConversas = new ConversasAdapter(listaConversas, getActivity());
         recyclerViewConversas.setAdapter(adapterConversas);
         adapterConversas.notifyDataSetChanged();
     }
