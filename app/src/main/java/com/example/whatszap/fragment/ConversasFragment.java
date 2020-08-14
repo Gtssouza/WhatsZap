@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,23 @@ public class ConversasFragment extends Fragment {
     public void onStop() {
         super.onStop();
         conversaRef.removeEventListener(childEventListenerConversas);
+    }
+
+    public void pesquisaConversas(String texto){
+        //Log.d("pesquisa",texto);
+        List<Conversa> listaConversaBusca = new ArrayList<>();
+        for(Conversa conversa : listaConversaBusca){
+            String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+            String ultMsg = conversa.getUltimaMsg().toLowerCase();
+
+            if(nome.contains(texto) || ultMsg.contains(texto)){
+                listaConversaBusca.add(conversa);
+            }
+        }
+
+        adapterConversas = new ConversasAdapter(listaConversaBusca, getActivity());
+        recyclerViewConversas.setAdapter(adapterConversas);
+        adapterConversas.notifyDataSetChanged();
     }
 
     public void recuperarConveras(){

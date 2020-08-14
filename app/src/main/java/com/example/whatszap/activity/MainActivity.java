@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
         autenticacao = ConfigFirebase.getFirebaseAutentication();
 
-        materialSearchView = findViewById(R.id.materialSearchPrincipal);
+
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("WhatZap");
         setSupportActionBar(toolbar);
 
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
                 .add("Conversas", ConversasFragment.class)
@@ -53,6 +53,24 @@ public class MainActivity extends AppCompatActivity {
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
         viewPagerTab.setViewPager(viewPager);
+
+        //Configuração do Material Search View
+        materialSearchView = findViewById(R.id.materialSearchPrincipal);
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ConversasFragment conversasFragment =(ConversasFragment) adapter.getPage(0);
+                if(newText != null && !newText.isEmpty()){
+                    conversasFragment.pesquisaConversas(newText.toLowerCase());
+                }
+                return true;
+            }
+        });
     }
 
     @Override
