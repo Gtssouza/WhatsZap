@@ -42,5 +42,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
