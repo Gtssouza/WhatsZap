@@ -16,6 +16,7 @@ import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.fragment.ContatosFragment;
 import com.example.whatszap.fragment.ConversasFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
@@ -24,6 +25,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
+    private MaterialSearchView materialSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         autenticacao = ConfigFirebase.getFirebaseAutentication();
+
+        materialSearchView = findViewById(R.id.materialSearchPrincipal);
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("WhatZap");
@@ -56,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        //Configurar botao de pesquisa
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        materialSearchView.setMenuItem(item);
 
         return super.onCreateOptionsMenu(menu);
     }
