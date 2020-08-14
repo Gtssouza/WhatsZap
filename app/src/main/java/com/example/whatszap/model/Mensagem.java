@@ -1,5 +1,8 @@
 package com.example.whatszap.model;
 
+import com.example.whatszap.config.ConfigFirebase;
+import com.google.firebase.database.DatabaseReference;
+
 public class Mensagem {
 
     private String idUser;
@@ -8,6 +11,7 @@ public class Mensagem {
 
     public Mensagem() {
     }
+
 
     public String getIdUser() {
         return idUser;

@@ -24,6 +24,7 @@ import com.example.whatszap.adapter.MensagemAdapter;
 import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.helper.Base64Custom;
 import com.example.whatszap.helper.UsuarioFirebase;
+import com.example.whatszap.model.Conversa;
 import com.example.whatszap.model.Mensagem;
 import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -184,6 +185,9 @@ public class ChatActivity extends AppCompatActivity {
 
                                     //Salvar mensagem para destinatario
                                     salvarMensagem(idUserDestinatario,idUserRemetente,msg);
+
+                                    //Salvar conversa
+                                    salvarConversa(msg);
                                 }
                             });
                         }
@@ -213,6 +217,17 @@ public class ChatActivity extends AppCompatActivity {
             Toast.makeText(ChatActivity.this,"Escreva uma mensagem",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void salvarConversa(Mensagem mensagem){
+        Conversa conversaRemetente = new Conversa();
+        Usuario user = new Usuario();
+        conversaRemetente.setIdRemetente(idUserRemetente);
+        conversaRemetente.setIdDestinatario(idUserDestinatario);
+        conversaRemetente.setUltimaMsg(mensagem.getMensagem());
+        conversaRemetente.setUsuarioExibicao(userDest);
+
+        conversaRemetente.salvar();
     }
 
     public void salvarMensagem(String remetente, String destinatario, Mensagem txtMensg){
