@@ -24,57 +24,23 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText campoLoginEmail, campoLoginSenha;
-    private Button btnEntrarLogin;
-    private Usuario usuario;
     private FirebaseAuth auth;
 
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser userAtual = auth.getCurrentUser();
-        if(userAtual != null){
-            abrirActivityMain();
-        }
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        auth = ConfigFirebase.getFirebaseAutentication();
+
         campoLoginEmail = findViewById(R.id.editEmailLogin);
         campoLoginSenha = findViewById(R.id.editSenhaLogin);
-        btnEntrarLogin = findViewById(R.id.btnLogin);
-
-        btnEntrarLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String campoEmail = campoLoginEmail.getText().toString();
-                String campoSenha = campoLoginSenha.getText().toString();
-
-                if(!campoEmail.isEmpty()){
-                    if(!campoSenha.isEmpty()){
-
-                        usuario = new Usuario();
-                        usuario.setEmail(campoEmail);
-                        usuario.setSenha(campoSenha);
-                        validarLogin();
-
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Senha incorreta",Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(LoginActivity.this, "Email incorreto",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
 
     }
 
-    public void validarLogin(){
+    public void logarUsuario(Usuario usuario){
 
-        auth = ConfigFirebase.getFirebaseAutentication();
         auth.signInWithEmailAndPassword(
                 usuario.getEmail(),
                 usuario.getSenha()
@@ -104,6 +70,34 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void validarAuthUser(View view){
+        String campoEmail = campoLoginEmail.getText().toString();
+        String campoSenha = campoLoginSenha.getText().toString();
+
+        if(!campoEmail.isEmpty()){
+            if(!campoSenha.isEmpty()){
+
+                Usuario usuario = new Usuario();
+                usuario.setEmail(campoEmail);
+                usuario.setSenha(campoSenha);
+                logarUsuario(usuario);
+
+            }else{
+                Toast.makeText(LoginActivity.this, "Senha incorreta",Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(LoginActivity.this, "Email incorreto",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser usuarioAtual = auth.getCurrentUser();
+        if ( usuarioAtual != null ){
+            abrirActivityMain();
+        }
+    }
 
     public void abrirCadastro(View view){
         Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
@@ -114,5 +108,8 @@ public class LoginActivity extends AppCompatActivity {
     public void abrirActivityMain(){
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
         startActivity(intent);
+
     }
+
+
 }
