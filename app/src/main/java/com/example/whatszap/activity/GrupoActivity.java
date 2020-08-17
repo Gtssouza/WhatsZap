@@ -115,7 +115,7 @@ public class GrupoActivity extends AppCompatActivity {
         recyclerMembroSelect.setHasFixedSize(true);
         recyclerMembroSelect.setAdapter(grupoSelectAdapter);
 
-       /* recyclerMember.addOnItemTouchListener(
+        recyclerMembroSelect.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         getApplicationContext(),
                         recyclerMembroSelect,
@@ -128,7 +128,8 @@ public class GrupoActivity extends AppCompatActivity {
                                 grupoSelectAdapter.notifyDataSetChanged();
 
                                 //Adicionando userSelecionado dentro da nova lista
-                                usuariosListaSelect.add(usuarioSelect);
+                                usuariosLista.add(usuarioSelect);
+                                contatos.notifyDataSetChanged();
 
 
                             }
@@ -145,7 +146,7 @@ public class GrupoActivity extends AppCompatActivity {
                         }
                 )
         );
-        */
+        
     }
 
     @Override
