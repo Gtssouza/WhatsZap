@@ -1,5 +1,6 @@
 package com.example.whatszap.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.whatszap.adapter.ContatosAdapter;
@@ -9,7 +10,6 @@ import com.example.whatszap.helper.RecyclerItemClickListener;
 import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 
 import com.example.whatszap.R;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +42,7 @@ public class GrupoActivity extends AppCompatActivity {
     private DatabaseReference userRef = ConfigFirebase.getFirebaseDatabase().child("usuarios");
     private FirebaseUser userAtual = UsuarioFirebase.getUserAtual();
     private Toolbar toolbar;
+    private FloatingActionButton fabAvancaCadastro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +58,8 @@ public class GrupoActivity extends AppCompatActivity {
         //Configurações iniciais
         recyclerMembroSelect = findViewById(R.id.recyclerMembrosSelecionados);
         recyclerMember = findViewById(R.id.recyclerMembros);
+        fabAvancaCadastro = findViewById(R.id.fabAvancaCadastro);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         //Configuração para recyclerView de contatos
 
@@ -151,6 +145,15 @@ public class GrupoActivity extends AppCompatActivity {
                         }
                 )
         );
+
+        fabAvancaCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(GrupoActivity.this, CadastroGrupoActivity.class);
+                i.putExtra("membros",(Serializable) usuariosListaSelect);
+                startActivity(i);
+            }
+        });
         
     }
 
@@ -165,6 +168,7 @@ public class GrupoActivity extends AppCompatActivity {
         super.onStop();
         userRef.removeEventListener(valueEventListenerGrupo);
     }
+
 
     public void recuperarContatos(){
         valueEventListenerGrupo = userRef.addValueEventListener(new ValueEventListener() {
