@@ -41,12 +41,15 @@ public class GrupoActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerGrupo;
     private DatabaseReference userRef = ConfigFirebase.getFirebaseDatabase().child("usuarios");
     private FirebaseUser userAtual = UsuarioFirebase.getUserAtual();
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grupo);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Novo Grupo");
+
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,6 +92,7 @@ public class GrupoActivity extends AppCompatActivity {
                                 //Adicionando userSelecionado dentro da nova lista
                                 usuariosListaSelect.add(usuarioSelect);
                                 grupoSelectAdapter.notifyDataSetChanged();
+                                atualizaMembrosToolbar();
 
 
                             }
@@ -130,6 +134,7 @@ public class GrupoActivity extends AppCompatActivity {
                                 //Adicionando userSelecionado dentro da nova lista
                                 usuariosLista.add(usuarioSelect);
                                 contatos.notifyDataSetChanged();
+                                atualizaMembrosToolbar();
 
 
                             }
@@ -177,6 +182,7 @@ public class GrupoActivity extends AppCompatActivity {
 
                 }
                 contatos.notifyDataSetChanged();
+                atualizaMembrosToolbar();
             }
 
             @Override
@@ -184,5 +190,11 @@ public class GrupoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void atualizaMembrosToolbar(){
+        int totalSelect = usuariosListaSelect.size();
+        int total = usuariosLista.size() + totalSelect;
+        toolbar.setSubtitle(totalSelect + " de " + total + " selecionados ");
     }
 }
