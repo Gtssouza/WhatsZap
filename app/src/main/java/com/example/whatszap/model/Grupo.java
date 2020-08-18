@@ -20,6 +20,12 @@ public class Grupo implements Serializable {
         setId(idFirebase);
     }
 
+    public void salvar(){
+        DatabaseReference databaseReference=ConfigFirebase.getFirebaseDatabase();
+        DatabaseReference grupoRef = databaseReference.child("grupos");
+        grupoRef.child(getId()).setValue(this);
+    }
+
     public String getId() {
         return id;
     }

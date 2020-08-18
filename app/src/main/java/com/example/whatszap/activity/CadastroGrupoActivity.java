@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.whatszap.adapter.GrupoSelecionadoAdapter;
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Grupo;
 import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,8 @@ public class CadastroGrupoActivity extends AppCompatActivity {
     private static final int SELECAO_GALERIA = 200;
     private StorageReference storageReference;
     private Grupo grupo;
+    private FloatingActionButton fabGrupoConfirma;
+    private EditText nomeGrupo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +67,8 @@ public class CadastroGrupoActivity extends AppCompatActivity {
         imgCadastroGrupo = findViewById(R.id.imgGrupo);
         storageReference = ConfigFirebase.getFirebaseStorage();
         grupo = new Grupo();
-
-        FloatingActionButton fab = findViewById(R.id.fabConfirmaGrupo);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fabGrupoConfirma = findViewById(R.id.fabConfirmaGrupo);
+        nomeGrupo = findViewById(R.id.editTextNomeGrupo);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -100,6 +97,19 @@ public class CadastroGrupoActivity extends AppCompatActivity {
         recyclerGrupoSelect.setLayoutManager(layoutManagerHorizontal);
         recyclerGrupoSelect.setHasFixedSize(true);
         recyclerGrupoSelect.setAdapter(adapterGrupo);
+
+        //configurar floating action button
+        fabGrupoConfirma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String grupoNome = nomeGrupo.getText().toString();
+                usuariosListaSelect.add(UsuarioFirebase.getDadosUsuarioLogado());
+                grupo.setMembros(usuariosListaSelect);
+
+                grupo.setNome(grupoNome);
+                grupo.salvar();
+            }
+        });
     }
 
     @Override
