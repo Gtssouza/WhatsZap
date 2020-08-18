@@ -232,7 +232,10 @@ public class ChatActivity extends AppCompatActivity {
                 //salvar mensagem para o destinatario
                 salvarMensagem(idUserDestinatario,idUserRemetente,mensagem);
 
-                salvarConversa(mensagem,false);
+                salvarConversa(idUserRemetente,idUserDestinatario,userDest,mensagem,false);
+
+                Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+                salvarConversa(idUserDestinatario,idUserRemetente,usuarioLogado,mensagem,false);
             }else{
                 for(Usuario membro : grupo.getMembros()){
                     String idRemetenteGrupo = Base64Custom.codificaBase64(membro.getEmail());
@@ -244,7 +247,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     salvarMensagem(idRemetenteGrupo, idUserDestinatario,mensagem);
 
-                    salvarConversa(mensagem,true);
+                    salvarConversa(idRemetenteGrupo,idUserDestinatario,userDest,mensagem,true);
                 }
             }
 
@@ -255,17 +258,17 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    public void salvarConversa(Mensagem mensagem, boolean isGroup){
+    public void salvarConversa(String remetente, String destinatario,Usuario userExibicao,Mensagem mensagem, boolean isGroup){
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente(idUserRemetente);
-        conversaRemetente.setIdDestinatario(idUserDestinatario);
+        conversaRemetente.setIdRemetente(remetente);
+        conversaRemetente.setIdDestinatario(destinatario);
         conversaRemetente.setUltimaMsg(mensagem.getMensagem());
 
         if(isGroup){//Conversa de grupo
             conversaRemetente.setIsGroup("true");
             conversaRemetente.setGrupo(grupo);
         }else{
-            conversaRemetente.setUsuarioExibicao(userDest);
+            conversaRemetente.setUsuarioExibicao(userExibicao);
         }
         conversaRemetente.salvar();
     }
