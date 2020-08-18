@@ -150,7 +150,7 @@ public class ConversasFragment extends Fragment {
     }
 
     public void recuperarConveras(){
-
+        listaConversas.clear();
         childEventListenerConversas = conversaRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

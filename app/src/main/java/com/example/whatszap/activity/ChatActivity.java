@@ -298,6 +298,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void recuperarMsg(){
+        mensagens.clear();
         childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
