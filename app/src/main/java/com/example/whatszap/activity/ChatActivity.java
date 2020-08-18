@@ -25,6 +25,7 @@ import com.example.whatszap.config.ConfigFirebase;
 import com.example.whatszap.helper.Base64Custom;
 import com.example.whatszap.helper.UsuarioFirebase;
 import com.example.whatszap.model.Conversa;
+import com.example.whatszap.model.Grupo;
 import com.example.whatszap.model.Mensagem;
 import com.example.whatszap.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView sendImage;
     private static final int SELECAO_CAMERA =100;
     private StorageReference storageReference;
+    private Grupo grupo;
 
 
     //Identificadores de Usuario remetente e destinatario
@@ -92,20 +94,35 @@ public class ChatActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
 
-            userDest = (Usuario) bundle.getSerializable("chatContato");
-            txtNomeChat.setText(userDest.getNome());
+            if(bundle.containsKey("chatGrupo")){
+                grupo = (Grupo) bundle.getSerializable("chatGrupo");
+                idUserDestinatario = grupo.getId();
+                txtNomeChat.setText(grupo.getNome());
 
-            String foto = userDest.getFoto();
-            if(foto != null){
-                Uri url = Uri.parse(userDest.getFoto());
-                Glide.with(ChatActivity.this).load(url).into(imgPerfilChat);
+                String foto = grupo.getFoto();
+                if(foto != null){
+                    Uri url = Uri.parse(grupo.getFoto());
+                    Glide.with(ChatActivity.this).load(url).into(imgPerfilChat);
+                }else{
+                    imgPerfilChat.setImageResource(R.drawable.padrao);
+                }
             }else{
-                imgPerfilChat.setImageResource(R.drawable.padrao);
+                /*----------CONVERSA CONVENCIONAL--------------------*/
+                userDest = (Usuario) bundle.getSerializable("chatContato");
+                txtNomeChat.setText(userDest.getNome());
+
+                String foto = userDest.getFoto();
+                if(foto != null){
+                    Uri url = Uri.parse(userDest.getFoto());
+                    Glide.with(ChatActivity.this).load(url).into(imgPerfilChat);
+                }else{
+                    imgPerfilChat.setImageResource(R.drawable.padrao);
+                }
+
+                //recuperar dados usuario destinatario
+                idUserDestinatario = Base64Custom.codificaBase64(userDest.getEmail());
+                /*----------CONVERSA CONVENCIONAL--------------------*/
             }
-
-            //recuperar dados usuario destinatario
-            idUserDestinatario = Base64Custom.codificaBase64(userDest.getEmail());
-
         }
         //Configuração adapter
         adapterMsg = new MensagemAdapter(mensagens,getApplicationContext());
