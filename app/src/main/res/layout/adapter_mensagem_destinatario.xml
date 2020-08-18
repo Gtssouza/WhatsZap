@@ -15,6 +15,12 @@
         android:backgroundTint="@color/balaoDestinatario"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/nomeExibicao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Destinatario" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"

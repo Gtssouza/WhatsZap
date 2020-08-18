@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference mensagensRef;
     private ChildEventListener childEventListenerMensagens;
     private ImageView sendImage;
+    private Usuario usuarioRemetente;
     private static final int SELECAO_CAMERA =100;
     private StorageReference storageReference;
     private Grupo grupo;
@@ -84,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //Recupera dados do user remetente
         idUserRemetente = UsuarioFirebase.getIndentificadorUser();
-
+        usuarioRemetente = UsuarioFirebase.getDadosUsuarioLogado();
         FloatingActionButton fab = findViewById(R.id.fabEnviar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -234,8 +235,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 salvarConversa(idUserRemetente,idUserDestinatario,userDest,mensagem,false);
 
-                Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-                salvarConversa(idUserDestinatario,idUserRemetente,usuarioLogado,mensagem,false);
+                salvarConversa(idUserDestinatario,idUserRemetente,usuarioRemetente,mensagem,false);
             }else{
                 for(Usuario membro : grupo.getMembros()){
                     String idRemetenteGrupo = Base64Custom.codificaBase64(membro.getEmail());
@@ -244,6 +244,7 @@ public class ChatActivity extends AppCompatActivity {
                     Mensagem mensagem = new Mensagem();
                     mensagem.setIdUser(idUsuarioLogadoGrupo);
                     mensagem.setMensagem(msg);
+                    mensagem.setNome(usuarioRemetente.getNome());
 
                     salvarMensagem(idRemetenteGrupo, idUserDestinatario,mensagem);
 
