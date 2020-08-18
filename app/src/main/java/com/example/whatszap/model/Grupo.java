@@ -1,6 +1,7 @@
 package com.example.whatszap.model;
 
 import com.example.whatszap.config.ConfigFirebase;
+import com.example.whatszap.helper.Base64Custom;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
@@ -24,6 +25,22 @@ public class Grupo implements Serializable {
         DatabaseReference databaseReference=ConfigFirebase.getFirebaseDatabase();
         DatabaseReference grupoRef = databaseReference.child("grupos");
         grupoRef.child(getId()).setValue(this);
+
+        //Salvar conversa para membros do grupo
+        for(Usuario membro : getMembros()){
+
+            String idRementente = Base64Custom.codificaBase64(membro.getEmail());
+            String idDestinatario = getId();
+
+            Conversa conversa = new Conversa();
+            conversa.setIdRemetente(idRementente);
+            conversa.setIdDestinatario(idDestinatario);
+            conversa.setUltimaMsg("");
+            conversa.setIsGroup("true");
+            conversa.setGrupo(this);//vai salvar todos os dados desse grupo
+            conversa.salvar();
+        }
+
     }
 
     public String getId() {
